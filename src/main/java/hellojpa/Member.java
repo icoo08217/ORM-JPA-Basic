@@ -1,23 +1,32 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "USERNAME")
     private String username;
 
-    public Member() {
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID",insertable = false, updatable = false)
+    private Team team;
+//    @Column(name = "TEAM_ID")
+
+    public Team getTeam() {
+        return team;
     }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
 
     public Long getId() {
         return id;
@@ -34,4 +43,5 @@ public class Member {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

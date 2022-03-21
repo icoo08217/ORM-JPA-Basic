@@ -1,9 +1,9 @@
 package hellojpa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import org.hibernate.Hibernate;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -18,7 +18,35 @@ public class JpaMain {
 
         try { // 정석 코드
 
-            //영속
+            Member member1 = new Member();
+            member1.setUsername("hello1");
+
+            em.persist(member1);
+
+            em.flush();
+            em.clear();
+            //
+
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("refMember = " + refMember.getClass()); //Proxy
+//            refMember.getUsername(); // 프록시 강제 초기화
+            Hibernate.initialize(refMember);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+        emf.close();
+    }
+
+}
+
+/*
+*           //영속
             // em.persist();
             // 준영속
             // 특정 엔티티만 준영속 상태로 전환
@@ -31,22 +59,4 @@ public class JpaMain {
             // 트랜잭션이라는 작업 단위가 중요 -> 커밋 직전에만 동기화하면 된다.
 
             // JDBC Batch : Buffering 과 유사한 기능을 한다.
-
-            Member member = new Member();
-            member.setUsername("C");
-
-            System.out.println("========");
-            em.persist(member);
-            System.out.println("member.id = " + member.getId());
-            System.out.println("========");
-
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-        } finally {
-            em.close();
-        }
-
-        emf.close();
-    }
-}
+*/
