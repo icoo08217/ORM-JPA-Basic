@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
-@MappedSuperclass
+//@MappedSuperclass
 public abstract class BaseEntity { // 직접 사용할 일이 없기 때문에 추상클래스 권장
 
     @Column(name = "INSERT_MEMBER")
